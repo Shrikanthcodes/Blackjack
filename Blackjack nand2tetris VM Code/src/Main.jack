@@ -1,0 +1,260 @@
+class Main{
+	
+	function void main(){  //Main function to handle the main work flow.
+		var Random random; //Instantiates the Random class
+		var int x;  //Arbitrary variable to increase randomness
+		var Player user; //controlled by user
+		var Player dealer; //controlled by computer
+		var int userScore; //user's score, updated every turn
+		var int dealerScore; //dealer's score, updated every turn
+		var char command; // store the command user enter
+		var int gameover; //Boolean indicator for end of game
+		var int userstop; //Boolean indicator for when user chooses to stay
+		var string dealerfirst; //Dealer's first card
+		var string dealersecond; //Dealer's second card
+		var int playerwin; //indicator for player winning
+		var int turn; //arbitrary variable to induce randomness
+		var int y; //arbitrary variable to induce randomness
+
+
+		//initialization
+		let x = OE.opening(); //Function from OE class called
+		let random = Random.new(123+x); //Seed value for increasing randomness
+		let user = Player.new(); //Create user profile
+		let dealer = Player.new(); //Create dealer profile
+		let userScore = user.getScore();
+		let dealerScore = dealer.getScore();
+		let userstop = 0;
+		let gameover = 0;
+		let playerwin = 0;
+		let y = 43;
+
+		do Output.moveCursor(0,0);
+		do Screen.clearScreen();
+		do Output.printString("Let the Blackjack game begin! ");
+		do Output.println();
+		do Output.println();
+		do Sys.wait(4000);
+
+		//Dealing dealer's First Hand
+		do Output.printString("Dealing the first hand");
+		do Output.println();
+		do Sys.wait(2000);
+		do Output.printString("Dealer draws: *Card Hidden*");
+		let turn = random.randRange(13);
+		do user.changeRandom(turn);
+		let turn = random.randRange(31);
+		let dealerfirst = dealer.roll(x+turn);
+		do Output.println();
+		do Sys.wait(2000);
+		do Output.println();
+		let dealerScore = dealer.getScore();
+	
+		//Dealing User's first card
+		do Output.printString("User draws: ");
+		let turn = random.randRange(13);
+		do user.changeRandom(turn);
+		let turn = random.randRange(131);
+		do Output.printString(user.roll(turn));
+		do Output.println();
+		do Output.printString("User's score is : ");
+		let userScore = user.getScore();
+		do Output.printInt(userScore);
+		do Output.println();
+		do Sys.wait(2000);
+		do Output.println();
+		
+
+		//Dealing dealer's Second Hand
+		do Output.println();
+		do Output.printString("Dealing the second hand");
+		do Output.println();
+		do Sys.wait(2000);
+		do Output.println();
+		do Output.printString("Dealer draws: ");
+		let turn = random.randRange(13);
+		do user.changeRandom(turn);
+		let turn = random.randRange(431);
+		let dealersecond = dealer.roll(x+turn);
+		do Output.printString(dealersecond);
+		do Output.println();
+		do Output.printString("Dealer's hand : *Hidden* ");
+		let dealerScore = dealer.getScore();
+		do Output.printString(dealersecond);
+		do Output.println();
+		do Sys.wait(2000);
+		do Output.println();
+
+
+		//Dealing user's second Hand		
+		do Output.printString("User draws: ");
+		let turn = random.randRange(13);
+		do user.changeRandom(turn);
+		let turn = random.randRange(21);
+		do Output.printString(user.roll(x+turn));
+		do Output.println();
+		do Output.println();
+		do Output.printString("Now user's score is : ");
+		let userScore = user.getScore();
+		do Output.printInt(userScore);
+		do Output.println();
+		do Sys.wait(4000);
+		do Output.moveCursor(0,0);
+		do Screen.clearScreen();
+
+		//Function process after dealing first two cards, ask user to hit or stay
+		while(~(userScore > 21) & ~(userstop = 1)){
+			//display scores
+			do Output.printString("Your score is : ");
+			do Output.printInt(userScore);
+			do Output.println();
+			do Sys.wait(2000);
+			do Output.printString("Dealer's hand : *Hidden* ");
+			do Output.printString(dealersecond);
+			do Output.println();
+			do Sys.wait(2000);
+			
+			//display instructions
+			do Output.printString("Hit or stay? 'h' for hit and 's' for stay:");
+			let command = Keyboard.readChar();
+			do Output.println();
+
+			//hit option chosen
+			if((command = 72)){
+				do Output.printString("User has chosen to hit!");
+				do Output.println();
+				do Sys.wait(2000);
+				do Output.printString("User draws : ");
+				let turn = random.randRange(13);
+				do user.changeRandom(turn);
+				let y = x + y + turn;
+				let turn = random.randRange(y+x);
+				do Output.printString(user.roll(x+turn));
+				do Output.println();
+				do Sys.wait(2000);
+				let userScore = user.getScore();
+				}
+
+			//stay option chosen
+			if(command = 83){
+				do Output.printString("User stays!");
+				do Output.println();
+				do Sys.wait(2000);
+				let userstop = 1;
+				do Output.moveCursor(0,0);
+				do Screen.clearScreen();
+				do Output.printString("Your final score is : ");
+				let userScore = user.getScore();
+				do Output.printInt(userScore);
+				do Output.println();
+				do Sys.wait(2000);
+				do Output.println();
+				}
+
+			//see is user player is the winner
+			if(userScore = 21){
+				do Output.printString("You win this game of blackjack!");
+				let gameover = 1;
+				let userstop = 1;
+				let playerwin = 1;
+				do Sys.wait(5000);
+				}
+
+			//see if player busts
+			if(~(userScore < 22)){
+				do Output.printString("You bust! Dealer Wins");
+				let gameover = 1;
+				let userstop = 1;
+				do Sys.wait(5000);
+				}
+			}
+
+			//After user chooses to stay, dealer plays until he hits a minimum score of 17.
+		while(~(dealerScore > 17) & ~(gameover = 1)){	
+			do Output.printString("Dealer's hitting!");
+			do Output.println();
+			do Sys.wait(2000);
+			do Output.printString("Dealer draws: ");
+			let turn = random.randRange(13);
+			do user.changeRandom(turn);
+			let y = x + y + turn;
+			let turn = random.randRange(y);
+			do Output.printString(dealer.roll(x+turn));
+			do Output.println();
+			do Sys.wait(2000);
+			do Output.printString("Now dealer's score is : ");
+			let dealerScore = dealer.getScore();
+			do Output.printInt(dealerScore);
+			do Output.println();
+			do Sys.wait(2000);
+
+			//check if dealer busts
+			if(~(dealerScore < 22)){
+				do Output.printString("Dealer busts! You've won the game.");
+				let gameover = 1;
+				let playerwin = 1;
+				do Sys.wait(5000);
+				}
+			
+			//check if dealer wins
+			if((dealerScore = 21)){
+				do Output.printString("Dealer wins! You've lost the game.");
+				let gameover = 1;
+				let playerwin = 1;
+				do Sys.wait(5000);
+				}
+
+
+			}
+
+		//comparing final scores and producing results
+		if(~(userScore > 21) & ~(dealerScore > 21) & ~(gameover = 1)){
+			if(userScore > dealerScore)
+				{
+				do Output.printString("Dealer scored: ");
+				do Output.printInt(dealerScore);
+				do Output.println();
+				do Output.printString("User scored: ");
+				do Output.printInt(userScore);
+				do Output.println();
+				do Output.printString("User has more points and wins!");
+				let playerwin = 1;
+				do Sys.wait(5000);
+				}
+			if(dealerScore > userScore)
+				{
+				do Output.printString("Dealer scored: ");
+				do Output.printInt(dealerScore);
+				do Output.println();
+				do Output.printString("User scored: ");
+				do Output.printInt(userScore);
+				do Output.println();
+				do Output.printString("Dealer scored higher and wins!");
+				do Sys.wait(5000);
+				}
+			if(userScore = dealerScore)
+				{
+				do Output.printString("Dealer and user both scored: ");
+				do Output.printInt(dealerScore);
+				do Output.println();
+				do Output.printString("User and dealer scores tied!");
+				do Sys.wait(5000);
+				}
+			let gameover = 1;
+			}
+		//Final message
+		do Output.println();
+		do Output.printString("Thanks for playing");
+		do Sys.wait(8000);
+		do Output.moveCursor(0,0);
+		do Screen.clearScreen();
+
+		do OE.ending(playerwin);
+		//clear memory
+		do user.dispose();
+		do dealer.dispose();
+		return;
+
+	}
+
+}

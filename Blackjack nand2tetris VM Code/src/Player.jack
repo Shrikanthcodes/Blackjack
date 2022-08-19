@@ -1,0 +1,102 @@
+/**
+Object for player
+*/
+class Player{
+	field int score;
+	field Random random;
+	field int count;
+	field string symbol;
+	constructor Player new(){
+		let score = 0;
+		let symbol = " ";
+		return this;
+	}	
+
+	//method for drawing a card
+	method int roll(int count) {
+		var int num;
+		let random = Random.new(count);
+		let num = random.randRange(13) + 1;
+
+		if(num = 1){
+			if(~(score > 11)){
+			let score = score + 10;
+			}
+			let score = score + 1;
+			let symbol = " A ";
+		}
+
+		if(num = 2){
+			let score = score + num;
+			let symbol = " 2 ";
+		}
+
+		if(num = 3){
+			let score = score + num;
+			let symbol = " 3 ";
+		}
+		if(num = 4){
+			let score = score + num;
+			let symbol = " 4 ";
+		}
+		if(num = 5){
+			let score = score + num;
+			let symbol = " 5 ";
+		}
+		if(num = 6){
+			let score = score + num;
+			let symbol = " 6 ";
+		}
+		if(num = 7){
+			let score = score + num;
+			let symbol = " 7 ";
+		}
+		if(num = 8){
+			let score = score + num;
+			let symbol = " 8 ";
+		}
+		if(num = 9){
+			let score = score + num;
+			let symbol = " 9 ";
+		}
+		if(num = 10){
+			let score = score + num;
+			let symbol = " 10 ";
+		}
+		if(num = 11){
+			let score = score + 10;
+			let symbol = " J ";
+		}
+		if(num = 12){
+			let score = score + 10;
+			let symbol = " Q ";
+		}
+		if(num = 13){
+			let score = score + 10;
+			let symbol = " K ";
+		}
+		if(num = 14){
+			let score = score + 10;
+			let symbol = " Joker ";
+		}
+		return symbol;
+	}
+	
+	//getting score for user or dealer
+	method int getScore(){
+		return score;
+	}
+	//changing random call time
+	method void changeRandom(int c){
+		let random = Random.new(count);
+		do random.addCallTime(c);
+		return;
+
+	}
+	//dispose objects after use is over
+	method void dispose(){
+		do random.dispose();
+		do Memory.deAlloc(this);
+		return;
+	}
+}
