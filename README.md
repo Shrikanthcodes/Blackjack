@@ -1,2 +1,2 @@
 # Blackjack
-2 separate Blackjack implementations using Python and VM code (Nand2tetris)
+Blackjack implementations using Hack Language on VM code (Nand2tetris)
